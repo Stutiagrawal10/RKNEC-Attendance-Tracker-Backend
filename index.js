@@ -1,0 +1,29 @@
+const express = require('express');
+const mongoose = require('mongoose');
+require('dotenv').config();
+const app = express();
+
+// Regular middleware
+app.use(express.json());
+
+const credentialRouter = require('./routes/credential')
+app.use('/credential',credentialRouter)
+
+// PORT
+const port = process.env.PORT || 8000;
+
+// MONGODB Connect
+mongoose.connect(process.env.MONGODB_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+})
+.then(console.log(`DB connected successfully`))
+.catch(error =>{
+    console.log(`DB connection failed`);
+    console.log(error);
+    process.exit(1);
+})
+
+app.listen(port, () =>{
+    console.log(`Server is running on port: ${port}`);
+});
